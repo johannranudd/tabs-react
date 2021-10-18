@@ -5,6 +5,7 @@ import { FaAngleDoubleRight } from 'react-icons/fa';
 const url = 'https://course-api.com/react-tabs-project';
 
 function App() {
+  console.log(url);
   return (
     <StyledMain>
       <header className='title'>
