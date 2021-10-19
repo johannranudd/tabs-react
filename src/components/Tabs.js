@@ -1,44 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FaAngleDoubleRight } from 'react-icons/fa';
-// import { useState } from 'react';
 
 const Tabs = ({ list }) => {
-  //   const orderedList = list.sort((a, b) => {
-  //     if (a.order > b.order) {
-  //       return 1;
-  //     } else {
-  //       return -1;
-  //     }
-  //   });
-
-  const [index, setIndex] = useState(0);
-  const [newList, setNewList] = useState(list[index]);
-
-  const filterItems = (id) => {
-    const newItem = list.filter((item) => {
-      if (item.id === id) {
-        return item;
-      }
-    });
-    setNewList(newItem[0]);
-  };
-
+  const [jobs, setJobs] = useState(list);
+  const [value, setValue] = useState(0);
   return (
     <section className='container'>
-      <Companies filterItems={filterItems} list={list} />
-      <Info newList={newList} />
+      <Buttons jobs={jobs} value={value} setValue={setValue} />
+      <Info jobs={jobs} value={value} />
     </section>
   );
 };
 
-const Companies = ({ list, filterItems }) => {
+const Buttons = ({ jobs, setValue, value }) => {
   return (
-    <article className='btn-conainer'>
-      {list.map((mapItem, index) => {
-        const { id, company } = mapItem;
+    <article className='btn-container'>
+      {jobs.map((item, index) => {
         return (
-          <button key={index} className='btn' onClick={() => filterItems(id)}>
-            {company}
+          <button
+            key={index}
+            onClick={() => setValue(index)}
+            className={`btn ${index === value && 'active-btn'}`}
+          >
+            {item.company}
           </button>
         );
       })}
@@ -46,25 +30,24 @@ const Companies = ({ list, filterItems }) => {
   );
 };
 
-const Info = ({ newList }) => {
-  //   console.log(newList);
-  const { company, dates, duties, id, order, title } = newList;
+const Info = ({ jobs, value }) => {
+  const { company, dates, duties, title } = jobs[value];
   return (
     <article className='info-container'>
       <h2>{title}</h2>
       <h3>{company}</h3>
       <p>{dates}</p>
       <div className='duties'>
-        {duties.map((duty) => {
+        {duties.map((duty, index) => {
           return (
-            <div className='duty'>
+            <div key={index} className='duty'>
               <FaAngleDoubleRight />
               <p>{duty}</p>
             </div>
           );
         })}
       </div>
-      <button>More Info</button>
+      <button className='more-info-btn'>More Info</button>
     </article>
   );
 };
